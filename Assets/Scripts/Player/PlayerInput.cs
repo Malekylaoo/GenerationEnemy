@@ -15,10 +15,10 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        CheckKey();
+        GetGoing();
     }
 
-    private void CheckKey()
+    private void GetGoing()
     {
         if (Input.GetKeyDown(KeyCode.W))
         {

@@ -13,28 +13,25 @@ public class Spawner : ObjectPool
     private void Start()
     {
         Initialize(_enemyPrefab);
-    }
-
-    private void Update()
-    {
-        _elapsedTime += Time.deltaTime;
-
-        if(_elapsedTime >= _secondsBetweenSpawn)
-        {
-            if (TryGetObject(out GameObject enemy))
-            {
-                _elapsedTime = 0;
-
-                int spawnPointNumber = Random.Range(0, _spawnPoints.Length);
-
-                SetEnemy(enemy, _spawnPoints[spawnPointNumber].position);
-            } 
-        }
+        StartCoroutine(SpawnEnemy());
     }
 
     private void SetEnemy(GameObject enemy, Vector3 spawnPoint)
     {
         enemy.SetActive(true);
         enemy.transform.position = spawnPoint;
+    }
+
+    private IEnumerator SpawnEnemy()
+    {
+        while(Time.timeScale != 0)
+        {
+            if (TryGetObject(out GameObject enemy))
+            {
+                int spawnPointNumber = Random.Range(0, _spawnPoints.Length);
+                SetEnemy(enemy, _spawnPoints[spawnPointNumber].position);
+                yield return new WaitForSecondsRealtime(_secondsBetweenSpawn);
+            }
+        }
     }
 }
